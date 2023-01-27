@@ -1,5 +1,6 @@
 module TestMatrices
 
-# Write your package code here.
+include("types/toeplitz.jl")
+export Toeplitz
 
 end
