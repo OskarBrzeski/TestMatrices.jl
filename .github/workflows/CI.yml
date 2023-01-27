@@ -18,8 +18,8 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.5' # Arbitrary, may support older versions in the future
-          - '1.8'
+          # check later what is the earlist version I can support
+          - '1.8' # Version used to develop
           - '1' # Latest version of Julia 1.x
           - 'nightly'
         os:
