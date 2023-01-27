@@ -1,6 +1,3 @@
-using TestMatrices
-using Test
+using SafeTestsets
 
-@testset "TestMatrices.jl" begin
-    # Write your tests here.
-end
+@safetestset "toeplitz.jl tests" begin include("toeplitz_tests.jl") end
