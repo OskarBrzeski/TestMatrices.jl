@@ -31,18 +31,8 @@ function size(A::Toeplitz, d::Integer)
     end
 end
 
-length(A::Toeplitz) = prod(size(A))
-
-axes(A::Toeplitz) = (Base.OneTo(length(A.col) + 1), Base.OneTo(length(A.row)))
-function axes(A::Toeplitz, d::Integer)
-    if d < 0
-        throw("dimension must be ≥ 1, got $d")
-    elseif d ≤ 2
-        return axes(A)[d]
-    else
-        return Base.OneTo(1)
-    end
-end
+axes(A::Toeplitz) = map(Base.OneTo, size(A))
+axes(A::Toeplitz, d::Integer) = Base.OneTo(size(A, d))
 
 # AbstractArray interface methods
 
