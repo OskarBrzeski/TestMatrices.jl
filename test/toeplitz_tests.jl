@@ -1,9 +1,8 @@
 using TestMatrices
 using Test
 
-testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
-
 @testset "Toeplitz indexing" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     @test testM[1, 1] == 1
     @test testM[3, 3] == 1
     @test testM[1, 2] == 2
@@ -14,6 +13,7 @@ testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
 end
 
 @testset "Toeplitz size" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     @test size(testM) == (5, 7)
     @test size(testM, 1) == 5
     @test size(testM, 2) == 7
@@ -21,10 +21,12 @@ end
 end
 
 @testset "Toeplitz length" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     @test length(testM) == 35 
 end
 
 @testset "Toeplitz axes" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     @test axes(testM) == (Base.OneTo(5), Base.OneTo(7))
     @test axes(testM, 1) == Base.OneTo(5)
     @test axes(testM, 2) == Base.OneTo(7)
@@ -32,6 +34,7 @@ end
 end
 
 @testset "Toeplitz to Matrix" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     convertedM = Matrix(testM)
     @test typeof(convertedM) == Matrix{Int64}
     @test convertedM[1, 1] == testM[1, 1]
@@ -42,6 +45,7 @@ end
 end
 
 @testset "Toeplitz transpose" begin
+    testM = Toeplitz([1, 2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     transposeM = transpose(testM)
     @test transposeM[1, 1] == testM[1, 1]
     @test transposeM[2, 1] == testM[1, 2]
@@ -51,4 +55,33 @@ end
     @test size(transposeM) == reverse(size(testM))
     @test length(transposeM) == length(testM)
     @test axes(transposeM) == reverse(axes(testM))
+end
+
+@testset "Toeplitz issymmetric" begin
+    testSym = Toeplitz([1, 2, 3], [2, 3])
+    @test testSym == transpose(testSym)
+    testNotSym = Toeplitz([1, 2, 3], [4, 5])
+    @test testNotSym != transpose(testNotSym)
+    testRec = Toeplitz([1, 2, 3, 4], [2, 3])
+    @test testRec != transpose(testRec)
+end
+
+@testset "Toeplitz adjoint" begin
+    testM = Toeplitz([5, -3im, 4], [2-1im, 7, 3])
+    adjointM = adjoint(testM)
+    @test testM[1, 1] == conj(adjointM[1, 1])
+    @test testM[2, 1] == conj(adjointM[1, 2])
+    @test testM[4, 3] == conj(adjointM[3, 4])
+    @test size(adjointM) == reverse(size(testM))
+    @test length(adjointM) == length(testM)
+    @test axes(adjointM) == reverse(axes(testM))
+end
+
+@testset "Toeplitz ishermitian" begin
+    testHer = Toeplitz([4, -3im, 5, 7+2im], [3im, 5, 7-2im])
+    @test testHer == adjoint(testHer)
+    testNotHer = Toeplitz([2im, 5, im], [5, -im])
+    @test testNotHer != adjoint(testNotHer)
+    testRec = Toeplitz([3, 5, -2im, 6], [5, 2im])
+    @test testRec != adjoint(testRec)
 end
