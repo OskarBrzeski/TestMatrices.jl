@@ -59,3 +59,14 @@ end
 # Matrix related calculations
 
 transpose(A::Toeplitz) = Toeplitz([A.row[1], A.col...], A.row[2:end])
+
+adjoint(A::Toeplitz{<:Real}) = transpose(A)
+function adjoint(A::Toeplitz)
+    row = map(conj, [A.row[1], A.col...])
+    col = map(conj, A.row[2:end])
+    return Toeplitz(row, col)
+end
+
+
+issymmetric(A::Toeplitz) = A == transpose(A)
+ishermitian(A::Toeplitz) = A == adjoint(A)
