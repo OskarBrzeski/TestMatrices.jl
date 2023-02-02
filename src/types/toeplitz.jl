@@ -18,6 +18,9 @@ end
 Toeplitz(tr::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T}(tr, row, col)
 Toeplitz{T}(tr::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T, V}(tr, row, col)
 
+Toeplitz(tr::T) where {T} = Toeplitz{T}(tr, Vector{T}(), Vector{T}())
+Toeplitz{T}(tr::T) where{T} = Toeplitz{T}(tr, Vector{T}(), Vector{T}())
+
 # Basic Functions
 
 size(A::Toeplitz) = (length(A.col) + 1, length(A.row) + 1)
