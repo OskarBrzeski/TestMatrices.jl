@@ -23,6 +23,8 @@ end
 @testset "Toeplitz length" begin
     testM = Toeplitz(1, [2, 3, 4, 5, 6, 7], [8, 9, 10, 11])
     @test length(testM) == 35 
+    testM = Toeplitz(5)
+    @test length(testM) == 1
 end
 
 @testset "Toeplitz axes" begin
