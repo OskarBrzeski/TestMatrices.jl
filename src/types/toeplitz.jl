@@ -4,22 +4,26 @@ import Base.length
 import Base.size
 
 struct Toeplitz{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
-    tr::T
+    tl::T
     row::V
     col::V
-    function Toeplitz{T, V}(tr, row, col) where {T, V<:AbstractVector{T}}
+    function Toeplitz{T, V}(tl, row, col) where {T, V<:AbstractVector{T}}
         Base.require_one_based_indexing(row, col)
-        new{T, V}(tr, row, col)
+        new{T, V}(tl, row, col)
     end
 end
 
 # Alternate Constructers
 
-Toeplitz(tr::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T}(tr, row, col)
-Toeplitz{T}(tr::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T, V}(tr, row, col)
+Toeplitz(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T}(tl, row, col)
+Toeplitz{T}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T, V}(tl, row, col)
 
-Toeplitz(tr::T) where {T} = Toeplitz{T}(tr, Vector{T}(), Vector{T}())
-Toeplitz{T}(tr::T) where{T} = Toeplitz{T}(tr, Vector{T}(), Vector{T}())
+function Toeplitz{T}(tl, row::AbstractVector, col::AbstractVector) where {T}
+    return Toeplitz(convert(T, tl), convert(AbstractVector{T}, row), convert(AbstractVector{T}, col))
+end
+
+Toeplitz(tl::T) where {T} = Toeplitz{T}(tl, Vector{T}(), Vector{T}())
+Toeplitz{T}(tl::T) where {T} = Toeplitz{T}(tl, Vector{T}(), Vector{T}())
 
 # Basic Functions
 
@@ -41,7 +45,7 @@ axes(A::Toeplitz, d::Integer) = Base.OneTo(size(A, d))
 
 function getindex(A::Toeplitz{T}, i::Integer, j::Integer) where T
     if i == j
-        return A.tr
+        return A.tl
     elseif i < j
         return A.row[j - i]
     else
@@ -51,7 +55,7 @@ end
 
 function setindex!(A::Toeplitz{T}, x, i::Integer, j::Integer) where T
     if i == j
-        A.tr = x
+        A.tl = x
     elseif i < j
         A.row[j - i] = x
     else
@@ -61,15 +65,16 @@ end
 
 # Matrix related calculations
 
-transpose(A::Toeplitz) = Toeplitz(A.tr, A.col, A.row)
+transpose(A::Toeplitz) = Toeplitz(A.tl, A.col, A.row)
 
 adjoint(A::Toeplitz{<:Real}) = transpose(A)
 function adjoint(A::Toeplitz)
-    tr = conj(A.tr)
+    tl = conj(A.tl)
     row = map(conj, A.col)
     col = map(conj, A.row)
-    return Toeplitz(tr, row, col)
+    return Toeplitz(tl, row, col)
 end
 
 issymmetric(A::Toeplitz) = A.row == A.col
-ishermitian(A::Toeplitz) = A.row == map(conj, A.col)
+ishermitian(A::Toeplitz{<:Real}) = issymmetric(A)
+ishermitian(A::Toeplitz) = A.tl.im == 0 & A.row == map(conj, A.col)
