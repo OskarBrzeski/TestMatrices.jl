@@ -17,13 +17,9 @@ end
 
 Toeplitz(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T}(tl, row, col)
 Toeplitz{T}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T, V}(tl, row, col)
-
 function Toeplitz{T}(tl, row::AbstractVector, col::AbstractVector) where {T}
     return Toeplitz(convert(T, tl), convert(AbstractVector{T}, row), convert(AbstractVector{T}, col))
 end
-
-Toeplitz(tl::T) where {T} = Toeplitz{T}(tl, Vector{T}(), Vector{T}())
-Toeplitz{T}(tl::T) where {T} = Toeplitz{T}(tl, Vector{T}(), Vector{T}())
 
 # Basic Functions
 
@@ -77,4 +73,4 @@ end
 
 issymmetric(A::Toeplitz) = A.row == A.col
 ishermitian(A::Toeplitz{<:Real}) = issymmetric(A)
-ishermitian(A::Toeplitz) = A.tl.im == 0 & A.row == map(conj, A.col)
+ishermitian(A::Toeplitz) = (A.tl.im == 0) & (A.row == map(conj, A.col))

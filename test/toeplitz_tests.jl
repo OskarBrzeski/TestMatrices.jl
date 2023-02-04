@@ -60,12 +60,12 @@ end
 end
 
 @testset "Toeplitz issymmetric" begin
-    testSym = Toeplitz(1, [2, 3], [2, 3])
-    @test testSym == transpose(testSym)
-    testNotSym = Toeplitz(1, [2, 3], [4, 5])
-    @test testNotSym != transpose(testNotSym)
-    testRec = Toeplitz(1, [2, 3, 4], [2, 3])
-    @test testRec != transpose(testRec)
+    testM = Toeplitz(1, [2, 3], [2, 3])
+    @test issymmetric(testM)
+    testM = Toeplitz(1, [2, 3], [4, 5])
+    @test ~issymmetric(testM)
+    testM = Toeplitz(1, [2, 3, 4], [2, 3])
+    @test ~issymmetric(testM)
 end
 
 @testset "Toeplitz adjoint" begin
@@ -80,10 +80,16 @@ end
 end
 
 @testset "Toeplitz ishermitian" begin
-    testHer = Toeplitz(4+0im, [-3im, 5, 7+2im], [3im, 5, 7-2im])
-    @test testHer == adjoint(testHer)
-    testNotHer = Toeplitz(2im, [5, 1im], [5, -1im])
-    @test testNotHer != adjoint(testNotHer)
-    testRec = Toeplitz(3+0im, [5, -2im, 6], [5, 2im])
-    @test testRec != adjoint(testRec)
+    testM = Toeplitz(5, [2, 4, 7], [2, 4, 7])
+    @test ishermitian(testM)
+    testM = Toeplitz(5, [2, 4, 7], [2, 4, 6])
+    @test ~ishermitian(testM)
+    testM = Toeplitz{Complex{Int64}}(4, [-3im, 5, 7+2im], [3im, 5, 7-2im])
+    @test ishermitian(testM)
+    testM = Toeplitz{Complex{Int64}}(2+2im, [5, 3im], [5, -3im])
+    @test ~ishermitian(testM)
+    testM = Toeplitz{Complex{Int64}}(2im, [5, 1im], [5, -1im])
+    @test ~ishermitian(testM)
+    testM = Toeplitz{Complex{Int64}}(3+0im, [5, -2im, 6], [5, 2im])
+    @test ~ishermitian(testM)
 end
