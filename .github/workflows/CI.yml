@@ -18,10 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          # check later what is the earlist version I can support
-          - '1.4' # Earliest I want to support
-          - '1.5'
-          - '1.6'
+          - '1.6' # LTS
           - '1.7'
           - '1.8' # Version used to develop
           - '1' # Latest version of Julia 1.x
