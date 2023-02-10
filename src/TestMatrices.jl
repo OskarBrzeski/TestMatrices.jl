@@ -9,4 +9,6 @@ export Circulant
 export issymmetric
 export ishermitian
 
+include("generators/toeplitz.jl")
+
 end
