@@ -48,10 +48,10 @@ transpose(A::Circulant) = Circulant([A.row[1], reverse(A.row[2:end])...])
 
 adjoint(A::Circulant{<:Real}) = transpose(A)
 function adjoint(A::Circulant)
-    row = map(conj, reverse(A.row))
-    return Circulant(row)
+    row = conj(reverse(A.row[2:end]))
+    return Circulant([conj(A.row), row...])
 end
 
 issymmetric(A::Circulant) = A.row[2:end] == reverse(A.row[2:end])
 ishermitian(A::Circulant{<:Real}) = issymmetric(A)
-ishermitian(A::Circulant) = (A.row[1].im == 0) & (A.row[2:end] == map(conj, reverse(A.row[2:end])))
+ishermitian(A::Circulant) = (A.row[1].im == 0) & (A.row[2:end] == conj(reverse(A.row[2:end])))
