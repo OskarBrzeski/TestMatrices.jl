@@ -70,11 +70,11 @@ transpose(A::Toeplitz) = Toeplitz(A.tl, A.col, A.row)
 adjoint(A::Toeplitz{<:Real}) = transpose(A)
 function adjoint(A::Toeplitz)
     tl = conj(A.tl)
-    row = map(conj, A.col)
-    col = map(conj, A.row)
+    row = conj(A.col)
+    col = conj(A.row)
     return Toeplitz(tl, row, col)
 end
 
 issymmetric(A::Toeplitz) = A.row == A.col
 ishermitian(A::Toeplitz{<:Real}) = issymmetric(A)
-ishermitian(A::Toeplitz) = (A.tl.im == 0) & (A.row == map(conj, A.col))
+ishermitian(A::Toeplitz) = (A.tl.im == 0) & (A.row == conj(A.col))
