@@ -21,6 +21,11 @@ Toeplitz{T}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T,
 function Toeplitz{T}(tl, row::AbstractVector, col::AbstractVector) where {T}
     return Toeplitz(convert(T, tl), convert(AbstractVector{T}, row), convert(AbstractVector{T}, col))
 end
+Toeplitz(tl::T, row::V) where {T, V<:AbstractVector{T}} = Toeplitz(tl, row, row)
+function Toeplitz{T}(tl, row::AbstractVector) where {T} 
+    conv = convert(AbstractVector{T}, row)
+    return Toeplitz(tl, conv, conv)
+end
 
 # Basic Functions
 
