@@ -1,5 +1,6 @@
 import Base.axes
 import Base.getindex
+import Base.setindex!
 import Base.length
 import Base.size
 
@@ -34,12 +35,14 @@ axes(A::Circulant, d::Integer) = Base.OneTo(size(A, d))
 
 # AbstractArray interface methods
 
-function getindex(A::Circulant{T}, i::Integer, j::Integer) where T
-    return A.row[mod(j - i, length(A.row)) + 1]
+@inline function getindex(A::Circulant{T}, i::Integer, j::Integer) where T
+    @boundscheck checkbounds(A, i, j)
+    return @inbounds A.row[mod(j - i, length(A.row)) + 1]
 end
 
-function setindex!(A::Circulant{T}, x, i::Integer, j::Integer) where T
-    A.row[mod(j - i, length(A.row)) + 1] = x
+@inline function setindex!(A::Circulant{T}, x, i::Integer, j::Integer) where T
+    @boundscheck checkbounds(A, i, j)
+    @inbounds A.row[mod(j - i, length(A.row)) + 1] = x
 end
 
 # Matrix related calculations
