@@ -1,9 +1,10 @@
 import Base.axes
 import Base.getindex
+import Base.setindex!
 import Base.length
 import Base.size
 
-struct Toeplitz{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
+mutable struct Toeplitz{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
     tl::T
     row::V
     col::V
@@ -19,6 +20,11 @@ Toeplitz(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T}(tl
 Toeplitz{T}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}} = Toeplitz{T, V}(tl, row, col)
 function Toeplitz{T}(tl, row::AbstractVector, col::AbstractVector) where {T}
     return Toeplitz(convert(T, tl), convert(AbstractVector{T}, row), convert(AbstractVector{T}, col))
+end
+Toeplitz(tl::T, row::V) where {T, V<:AbstractVector{T}} = Toeplitz(tl, row, row)
+function Toeplitz{T}(tl, row::AbstractVector) where {T} 
+    conv = convert(AbstractVector{T}, row)
+    return Toeplitz(tl, conv, conv)
 end
 
 # Basic Functions
@@ -39,24 +45,27 @@ axes(A::Toeplitz, d::Integer) = Base.OneTo(size(A, d))
 
 # AbstractArray interface methods
 
-function getindex(A::Toeplitz{T}, i::Integer, j::Integer) where T
+@inline function getindex(A::Toeplitz{T}, i::Integer, j::Integer) where T
+    @boundscheck checkbounds(A, i, j)
     if i == j
-        return A.tl
+        return @inbounds A.tl
     elseif i < j
-        return A.row[j - i]
+        return @inbounds A.row[j - i]
     else
-        return A.col[i - j]
+        return @inbounds A.col[i - j]
     end
 end
 
-function setindex!(A::Toeplitz{T}, x, i::Integer, j::Integer) where T
+@inline function setindex!(A::Toeplitz, x, i::Integer, j::Integer)
+    @boundscheck checkbounds(A, i, j)
     if i == j
-        A.tl = x
+        @inbounds A.tl = x
     elseif i < j
-        A.row[j - i] = x
+        @inbounds A.row[j - i] = x
     else
-        A.col[i - j] = x
+        @inbounds A.col[i - j] = x
     end
+    return x
 end
 
 # Matrix related calculations
