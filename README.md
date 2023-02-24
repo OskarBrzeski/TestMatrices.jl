@@ -4,6 +4,20 @@
 
 This is a package for easily creating a variety of matrices for use in testing algorithms. The package provides a collection of new matrix types to allow utilisation of Julia's multiple dispatch. The types also provide more efficient ways of storing the data which can be converted to the regular Matrix type and vice versa.
 
+# How to install
+
+To install the package, use Pkg.add() with the url of this repo.
+
+```julia
+julia> using Pkg; Pkg.add(url="https://github.com/OskarBrzeski/TestMatrices.jl")
+```
+
+Alternatively:
+
+```julia
+(Example) pkg> add https://github.com/OskarBrzeski/TestMatrices.jl
+```
+
 ## How to use
 
 The package provides types which can be instantiated as such:
