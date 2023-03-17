@@ -15,6 +15,8 @@ export ishermitian
 
 include("generators/toeplitz.jl")
 include("generators/circulant.jl")
+include("generators/hankel.jl")
+include("generators/hilbert.jl")
 
 export generate
 
