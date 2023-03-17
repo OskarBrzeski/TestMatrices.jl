@@ -4,7 +4,7 @@ import Base.setindex!
 import Base.length
 import Base.size
 
-struct Circulant{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
+mutable struct Circulant{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
     row::V
     function Circulant{T, V}(row) where {T, V<:AbstractVector{T}}
         Base.require_one_based_indexing(row)
