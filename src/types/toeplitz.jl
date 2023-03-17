@@ -4,9 +4,26 @@ import Base.setindex!
 import Base.length
 import Base.size
 
+"""
+    Toeplitz{T, V}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}}
+
+Type for constructing Toeplitz matrices.
+
+# Examples
+```julia-repl
+julia> Toeplitz{Int64, Vector{Int64}}(1, [2, 3], [4, 5])
+3×3 Toeplitz{Int64, Vector{Int64}}:
+ 1  2  3
+ 4  1  2
+ 5  4  1
+```
+"""
 mutable struct Toeplitz{T, V<:AbstractVector{T}} <: AbstractMatrix{T}
+    "Top left value of matrix"
     tl::T
+    "First row of matrix, except first value"
     row::V
+    "First column of matrix, excpet first value"
     col::V
     function Toeplitz{T, V}(tl, row, col) where {T, V<:AbstractVector{T}}
         Base.require_one_based_indexing(row, col)
