@@ -8,13 +8,13 @@ This is a package for easily creating a variety of matrices for use in testing a
 
 To install the package, use Pkg.add() with the url of this repo.
 
-```julia
+```jldoctest
 julia> using Pkg; Pkg.add(url="https://github.com/OskarBrzeski/TestMatrices.jl")
 ```
 
 Alternatively:
 
-```julia
+```jldoctest
 (Example) pkg> add https://github.com/OskarBrzeski/TestMatrices.jl
 ```
 
@@ -22,7 +22,7 @@ Alternatively:
 
 The package provides types which can be instantiated as such:
 
-```julia
+```jldoctest
 julia> using TestMatrices
 julia> A = Toeplitz{Int64}(1, [2, 3], [4, 5])
 3×3 Toeplitz{Int64, Vector{Int64}}:
@@ -33,7 +33,7 @@ julia> A = Toeplitz{Int64}(1, [2, 3], [4, 5])
 
 Each type can be instantiated in multiple ways, depending on the requirements of the user. It is recommended to include the type of the values when instantiating, but this can be skipped if all of the values can be correctly inferred as being of the same type.
 
-```julia
+```jldoctest
 A = Toeplitz(1+1im, [2+0im, 3+3im], [4+0im, 5+0im])      # this is fine
 B = Toeplitz(1+1im, [2, 3+3im], [4, 5])                  # this will result in an error
 C = Toeplitz{Complex{Int64}}(1+1im, [2, 3+3im], [4, 5])  # this will convert all arguments to specified type
@@ -41,7 +41,7 @@ C = Toeplitz{Complex{Int64}}(1+1im, [2, 3+3im], [4, 5])  # this will convert all
 
 Each type has all the methods needed for a functioning matrix type, as well as some extra for common matrix operations.
 
-```julia
+```jldoctest
 julia> A = Toeplitz(1, [2, 3], [4, 5])
 3×3 Toeplitz{Int64, Vector{Int64}}:
  1  2  3
@@ -57,7 +57,7 @@ julia> transpose(A)
 
 You can also generate matrices using the generate function and specifying a matrix type.
 
-```julia
+```jldoctest
 julia> generate(Toeplitz, 1:9, 5, 5)
 5×5 Toeplitz{Int64, Vector{Int64}}:
  2  7  9  1  4
