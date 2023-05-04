@@ -44,7 +44,7 @@ function Toeplitz{T}(tl, row::AbstractVector) where {T}
     return Toeplitz(tl, conv, conv)
 end
 
-# Basic Functions
+# AbstractArray interface methods
 
 size(A::Toeplitz) = (length(A.col) + 1, length(A.row) + 1)
 function size(A::Toeplitz, d::Integer)
@@ -56,11 +56,6 @@ function size(A::Toeplitz, d::Integer)
         return 1
     end
 end
-
-axes(A::Toeplitz) = map(Base.OneTo, size(A))
-axes(A::Toeplitz, d::Integer) = Base.OneTo(size(A, d))
-
-# AbstractArray interface methods
 
 @inline function getindex(A::Toeplitz{T}, i::Integer, j::Integer) where T
     @boundscheck checkbounds(A, i, j)
@@ -85,7 +80,7 @@ end
     return x
 end
 
-# Matrix related calculations
+# Matrix related functions
 
 transpose(A::Toeplitz) = Toeplitz(A.tl, A.col, A.row)
 

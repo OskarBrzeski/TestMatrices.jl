@@ -25,7 +25,7 @@ function Hankel{T}(row::AbstractVector, tr) where {T}
     return Hankel(conv, tr, conv)
 end
 
-# Basic Functions
+# AbstractArray interface methods
 
 size(A::Hankel) = (length(A.row) + 1, length(A.row) + 1)
 function size(A::Hankel, d::Integer)
@@ -37,11 +37,6 @@ function size(A::Hankel, d::Integer)
         return 1
     end
 end
-
-axes(A::Hankel) = map(Base.OneTo, size(A))
-axes(A::Hankel, d::Integer) = Base.OneTo(size(A, d))
-
-# AbstractArray interface methods
 
 @inline function getindex(A::Hankel{T}, i::Integer, j::Integer) where T
     @boundscheck checkbounds(A, i, j)
@@ -65,7 +60,7 @@ end
     end
 end
 
-# Matrix related calculations
+# Matrix related functions
 
 issymmetric(A::Hankel) = true
 ishermitian(A::Hankel{<:Real}) = true

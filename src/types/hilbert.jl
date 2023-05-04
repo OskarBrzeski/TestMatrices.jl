@@ -9,7 +9,7 @@ struct Hilbert <: AbstractMatrix{Rational}
     end
 end
 
-# Basic Functions
+# AbstractArray interface methods
 
 size(A::Hilbert) = (A.size, A.size)
 function size(A::Hilbert, d::Integer)
@@ -22,17 +22,12 @@ function size(A::Hilbert, d::Integer)
     end
 end
 
-axes(A::Hilbert) = (Base.OneTo(A.size), Base.OneTo(A.size))
-axes(A::Hilbert, d::Integer) = Base.OneTo(size(A, d))
-
-# AbstractArray interface methods
-
 @inline function getindex(A::Hilbert, i::Integer, j::Integer)
     @boundscheck checkbounds(A, i, j)
     return @inbounds 1 // (i + j - 1)
 end
 
-# Matrix related calculations
+# Matrix related functions
 
 issymmetric(A::Hilbert) = true
 ishermitian(A::Hilbert) = true

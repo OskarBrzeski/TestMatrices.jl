@@ -13,6 +13,8 @@ struct Chow <: AbstractMatrix{Integer}
     end
 end
 
+# AbstractArray interface methods
+
 size(A::Chow) = (A.size, A.size)
 function size(A::Chow, d::Integer)
     if d < 0
@@ -23,9 +25,6 @@ function size(A::Chow, d::Integer)
         return 1
     end
 end
-
-axes(A::Chow) = (Base.OneTo(A.size), Base.OneTo(A.size))
-axes(A::Chow, d::Integer) = Base.OneTo(size(A, d))
 
 @inline function getindex(A::Chow, i::Integer, j::Integer)
     @boundscheck checkbounds(A, i, j)
@@ -40,3 +39,8 @@ axes(A::Chow, d::Integer) = Base.OneTo(size(A, d))
     end
     return result
 end
+
+# Matrix related functions
+
+issymmetric(A::Chow) = false
+ishermitian(A::Chow) = false

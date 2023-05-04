@@ -17,7 +17,7 @@ end
 Circulant(row::V) where {T, V<:AbstractVector{T}} = Circulant{T}(row,)
 Circulant{T}(row::V) where {T, V<:AbstractVector{T}} = Circulant{T, V}(row)
 
-# Basic Functions
+# AbstractArray interface methods
 
 size(A::Circulant) = (length(A.row), length(A.row))
 function size(A::Circulant, d::Integer)
@@ -30,11 +30,6 @@ function size(A::Circulant, d::Integer)
     end
 end
 
-axes(A::Circulant) = map(Base.OneTo, size(A))
-axes(A::Circulant, d::Integer) = Base.OneTo(size(A, d))
-
-# AbstractArray interface methods
-
 @inline function getindex(A::Circulant{T}, i::Integer, j::Integer) where T
     @boundscheck checkbounds(A, i, j)
     return @inbounds A.row[mod(j - i, length(A.row)) + 1]
@@ -45,7 +40,7 @@ end
     @inbounds A.row[mod(j - i, length(A.row)) + 1] = x
 end
 
-# Matrix related calculations
+# Matrix related functions
 
 transpose(A::Circulant) = Circulant([A.row[1], reverse(A.row[2:end])...])
 
