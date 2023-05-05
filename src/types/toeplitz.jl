@@ -3,6 +3,8 @@ import Base.getindex
 import Base.setindex!
 import Base.length
 import Base.size
+import Base.transpose
+import Base.adjoint
 
 """
     Toeplitz{T, V}(tl::T, row::V, col::V) where {T, V<:AbstractVector{T}}

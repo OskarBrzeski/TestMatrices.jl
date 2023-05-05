@@ -16,9 +16,6 @@ export Hilbert
 export Permutation
 export Toeplitz
 
-export transpose
-export adjoint
-
 export issymmetric
 export ishermitian
 
